@@ -1,0 +1,3 @@
+# ignoring sdl2 files
+**/sdl2
+**/sources/sdl2_build

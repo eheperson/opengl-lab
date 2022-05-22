@@ -1,0 +1,11 @@
+
+// the configured options and settings for development environment
+
+#define rpppConfig_VERSION_MAJOR @rpppConfig_VERSION_MAJOR@
+#define rpppConfig_VERSION_MINOR @rpppConfig_VERSION_MINOR@
+#define rpppConfig_VERSION_PATCH @rpppConfig_VERSION_PATCH@
+/* When cmake configures this header file thevalues for 
+@TexampleLib_VERSION_MAJOR@ and @exampleLib_VERSION_MINOR@ will be replaced. */
+
+// source code now requires some definitions USE_MODULE_1
+#define USE_MODULE_1
