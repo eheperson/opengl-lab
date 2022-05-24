@@ -59,13 +59,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR})
 
 # target_include_directories(temp PUBLIC "${PROJECT_BINARY_DIR}") #example to add new executable : Step2
 
-# setings for modules dir
-set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
-add_subdirectory(${MODULES_DIR})
-
 # settings for external dir
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 add_subdirectory(${EXTERNAL_DIR})
+
+# setings for modules dir
+set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
+add_subdirectory(${MODULES_DIR})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS}) 
 # 

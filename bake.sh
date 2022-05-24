@@ -65,7 +65,10 @@ echo "" && echo " Build End" && echo ""
 echo "" && echo " Install Begin" && echo ""
 
 # cd ${buildDir} && cmake --install . --prefix ${installDir} && cd ${rootDir}
-cd ${buildDir} && cmake --install . && cd ${rootDir}
+
+# uncomment below
+# cd ${buildDir} && cmake --install . && cd ${rootDir}
+
 # if cmake version below than 3.13 use below
 # cd ${buildDir} && sudo make install  && cd ${rootDir}
 
@@ -76,7 +79,10 @@ echo "" && echo " Install End " && echo ""
 # -----------------------------------
 echo "" && echo " Packing Begin" && echo ""
 #
-cd ${buildDir}  && cpack -C Debug --verbose cd ${rootDir}
+
+# uncomment below
+# cd ${buildDir}  && cpack -C Debug --verbose cd ${rootDir}
+
 # To create an archive of the full source tree you would type:
         # cpack --config CPackSourceConfig.cmake
 echo "" && echo " Packing End " && echo ""

@@ -1,3 +1,7 @@
-# ignoring sdl2 files
-**/sdl2
-**/sources/sdl2_build
+# ignoring glfw files
+**/glfw
+**/sources/glfw_build
+
+# ignoring glm
+**/glm
+**/sources/glm_build

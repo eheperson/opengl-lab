@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include <rpppConfig.h>
+#include<iostream>
 
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #include <GL/glew.h>
@@ -9,11 +7,7 @@
 // Include GLM
 #include <glm/glm.hpp>
 
-int main(int arc, char ** argv) {
-
-    const std::string inputName = "Mr. Anderson";
-
-    std::cout << " 'ellooooo " << inputName << std::endl;
+int main(int arc, char ** argv){
 
     return 0;
 }
