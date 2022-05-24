@@ -1,3 +1,6 @@
 [submodule "external/sources/glfw"]
 	path = external/sources/glfw
 	url = git@github.com:glfw/glfw.git
+[submodule "external/sources/glm"]
+	path = external/sources/glm
+	url = git@github.com:g-truc/glm.git
