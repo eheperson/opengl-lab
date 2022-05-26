@@ -16,9 +16,9 @@ fi
 # delete and re-create build directory at every time
 if [ ! -d ${buildDir} ]; then
   mkdir ${buildDir}
-# else
-#   rm -r ${buildDir}
-#   mkdir ${buildDir}
+else
+  rm -r ${buildDir}
+  mkdir ${buildDir}
 fi
 
 # delete and re-create install directory at every time

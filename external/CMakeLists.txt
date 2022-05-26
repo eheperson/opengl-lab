@@ -25,38 +25,25 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 #
-#------------------------------------------------------------------------------------------------------------
-#
-# --- GLEW
-#
-#  find library
-find_library(
-    myglew glew 
-    NAMES glew2 GLEW GLEW2 
-    # PATHS "${CMAKE_CURRENT_SOURCE_DIR}/glew"
-    # PATH_SUFFIXES "lib/Release/x64" "lib/Release/x86"   
-    DOC "glew library"
-)
-if(${myglew} STREQUAL myglew-NOTFOUND)
-# if(NOT ${myglew})
-    message(FATAL_ERROR "no glew, sad day")
-else()
-    message(STATUS "glew found! as ${myglew}")
-    # list(APPEND EXTRA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/glew/include")
-    list(APPEND EXTRA_LIB_DIRS ${myglew})
-endif()
 #
 #------------------------------------------------------------------------------------------------------------
 #
 # --- OpenGL
 #
-find_package(OpenGL REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
 if(OpenGL_FOUND)
-    # pass
+    message(STATUS "opengl found! as ${OPENGL_INCLUDE_DIRS}")
+    # append in local scope
+    # TODO : more generic way required for linking OpenGL
+    list(APPEND EXTRA_LINKS OpenGL)
+    list(APPEND EXTRA_INCLUDE_DIRS " ${OPENGL_INCLUDE_DIRS}")
+    # set in parent scope
+    set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
+    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 else()
     message(FATAL_ERROR "no OpenGL, sad day")
 endif()
-#
+
 #------------------------------------------------------------------------------------------------------------
 #
 # --- GLFW
@@ -68,15 +55,19 @@ endif()
 find_package(glfw3 REQUIRED PATHS "${GLFW_BINARY_DIR}" NO_DEFAULT_PATH)
 #
 if(glfw3_FOUND)
-    message(STATUS "Found glfw3 ")
+    message(STATUS "glfw found! as ${glfw}")
     # append in local scope
-    list(APPEND EXTRA_LINKS glfw3)
+    # TODO : more generic way required for linking glfw
+    list(APPEND EXTRA_LINKS glfw)
+    list(APPEND EXTRA_INCLUDE_DIRS "${GLFW_BINARY_DIR}/include")
     # set in parent scope
-    set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
+    set(EXTRA_LINKS "${EXTRA_LIB_DIRS}" PARENT_SCOPE)
+    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 else()
     message(FATAL_ERROR "no glfw3, sad day")
 endif()
 #
+
 #------------------------------------------------------------------------------------------------------------
 #
 # --- GLM
@@ -95,3 +86,23 @@ if(glm_FOUND)
 else()
     message(FATAL_ERROR "no glm, sad day")
 endif()
+#
+#------------------------------------------------------------------------------------------------------------
+#
+# --- GLEW
+find_package(GLEW REQUIRED)
+if(GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+    message(STATUS "glew found! as ${GLEW_INCLUDE_DIRS}")
+    # append in local scope
+    list(APPEND EXTRA_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
+    # TODO : more generic way required for linking glew
+    list(APPEND EXTRA_LINKS GLEW)
+    # set in parent scope
+    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
+    set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
+else()
+    message(FATAL_ERROR "no glew, sad day")
+endif()
+#
+#------------------------------------------------------------------------------------------------------------
