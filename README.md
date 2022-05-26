@@ -275,3 +275,17 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
 
 
 
+* The screen origin is in the middle
+* Coordinate System : 
+    *  use the Right Hand Rule
+        * X is your thumb (X in on your right)
+        * Y is your index (Y is up)
+        * Z is your middle finger. (Z is towards your back)
+
+# Shaders
+* **vertex shader :** will be executed for each vertex
+* **fragment shader :** will be executed for each sample
+
+Shaders are programmed in a language called GLSL(GL Shader Language)
+
+GLSL has to be compiled at run time
