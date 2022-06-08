@@ -12,7 +12,12 @@
 int main(int arc, char ** argv) {
 
     const std::string inputName = "Mr. Anderson";
-
+    const std::string inputName = "Mr. Anderson";
+    const std::string inputName = "Mr. Anderson";
+    const std::string inputName = "Mr. Anderson";
+    const std::string inputName = "Mr. Anderson";
+    const std::string inputName = "Mr. Anderson";
+    
     std::cout << " 'ellooooo " << inputName << std::endl;
 
     return 0;
