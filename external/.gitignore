@@ -1,7 +1,7 @@
 # ignoring glfw files
 **/glfw
-**/sources/glfw_build
+**/sources/glfw-build
 
 # ignoring glm
 **/glm
-**/sources/glm_build
+**/sources/glm-build

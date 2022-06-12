@@ -35,11 +35,12 @@ if(OpenGL_FOUND)
     message(STATUS "opengl found! as ${OPENGL_INCLUDE_DIRS}")
     # append in local scope
     # TODO : more generic way required for linking OpenGL
-    list(APPEND EXTRA_LINKS OpenGL)
+    if(APPLE)
+        list(APPEND EXTRA_LINKS "-framework OpenGL")
+    else()
+        list(APPEND EXTRA_LINKS OpenGL)
+    endif()
     list(APPEND EXTRA_INCLUDE_DIRS " ${OPENGL_INCLUDE_DIRS}")
-    # set in parent scope
-    set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
-    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 else()
     message(FATAL_ERROR "no OpenGL, sad day")
 endif()
@@ -55,14 +56,15 @@ endif()
 find_package(glfw3 REQUIRED PATHS "${GLFW_BINARY_DIR}" NO_DEFAULT_PATH)
 #
 if(glfw3_FOUND)
-    message(STATUS "glfw found! as ${glfw}")
+    message(STATUS "glfw found! as ${GLFW_LIBRAR}")
     # append in local scope
     # TODO : more generic way required for linking glfw
-    list(APPEND EXTRA_LINKS glfw)
+    if(APPLE)
+        list(APPEND EXTRA_LINKS "${GLFW_BINARY_DIR}/lib/libglfw3.a")
+    else()
+        list(APPEND EXTRA_LINKS glfw)
+    endif()
     list(APPEND EXTRA_INCLUDE_DIRS "${GLFW_BINARY_DIR}/include")
-    # set in parent scope
-    set(EXTRA_LINKS "${EXTRA_LIB_DIRS}" PARENT_SCOPE)
-    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 else()
     message(FATAL_ERROR "no glfw3, sad day")
 endif()
@@ -81,8 +83,6 @@ if(glm_FOUND)
     message(STATUS "GLM found at ${GLM_BINARY_DIR}")
     # append in local scope
     list(APPEND EXTRA_INCLUDE_DIRS "${GLM_BINARY_DIR}/include")
-    # set in parent scope
-    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 else()
     message(FATAL_ERROR "no glm, sad day")
 endif()
@@ -90,19 +90,24 @@ endif()
 #------------------------------------------------------------------------------------------------------------
 #
 # --- GLEW
-find_package(GLEW REQUIRED)
-if(GLEW_FOUND)
-    include_directories(${GLEW_INCLUDE_DIRS})
-    message(STATUS "glew found! as ${GLEW_INCLUDE_DIRS}")
-    # append in local scope
-    list(APPEND EXTRA_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
-    # TODO : more generic way required for linking glew
-    list(APPEND EXTRA_LINKS GLEW)
-    # set in parent scope
-    set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
-    set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
-else()
-    message(FATAL_ERROR "no glew, sad day")
+if(!APPLE)
+    find_package(GLEW REQUIRED)
+    if(GLEW_FOUND)
+        include_directories(${GLEW_INCLUDE_DIRS})
+        message(STATUS "glew found! as ${GLEW_INCLUDE_DIRS}")
+        # append in local scope
+        list(APPEND EXTRA_INCLUDE_DIRS ${GLEW_INCLUDE_DIRS})
+        # TODO : more generic way required for linking glew
+        list(APPEND EXTRA_LINKS GLEW)
+    else()
+        message(FATAL_ERROR "no glew, sad day")
+    endif()
 endif()
 #
 #------------------------------------------------------------------------------------------------------------
+if(APPLE)
+    list(APPEND EXTRA_LINKS "-framework OpenGL" "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
+endif()
+# set in parent scope
+set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
+set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)

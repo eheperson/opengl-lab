@@ -3,17 +3,26 @@
 // #define GLEW_BUILD
 
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
-#include <GL/glew.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glext.h>
+#else
+    #include <GL/glew.h>
+#endif
+
 // Include GLFW
 #include <GLFW/glfw3.h>
+
 // Include GLM
 #include <glm/glm.hpp>
 
 int main(int arc, char ** argv){
 
     
-    /* Initialise GLFW*/
-    glewExperimental = true; // Needed for core profile
+    /* Initialise GLFW*/    
+    #ifndef __APPLE__
+        glewExperimental = true; // Needed for core profile
+    #endif
     if( !glfwInit() ){
         std::cout << stderr <<"Failed to initialize GLFW\n";
         return -1;
@@ -40,12 +49,14 @@ int main(int arc, char ** argv){
 
     glfwMakeContextCurrent(window); // Initialize GLEW
 
-    glewExperimental=true; // Needed in core profile
 
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        return -1;
-    };
+    #ifndef __APPLE__
+        glewExperimental=true; // Needed in core profile
+        if (glewInit() != GLEW_OK) {
+            fprintf(stderr, "Failed to initialize GLEW\n");
+            return -1;
+        };
+    #endif
 
     /*--------------------------------------------------------------------------------------------------*/
 

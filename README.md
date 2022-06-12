@@ -1,12 +1,13 @@
-# RPP-P (Rec-Play-Pause Pico)
- Template repository for cross-platform cpp development based on CMake build system Resources
+# OpenGL Lab
+
+Learn & Develop repository for OpenGL
 
 > **NOTE :** This repository is tested only on MacOS and debian based Linux Distributions. Will be updated for Windows in the future.
 
 ### Who is this repository for?
 * If project based on CMakeLists build system.
 * If project contains only few source files like `main.cpp`, `mylib.cpp` etc.
-* If your project requires 3Rd dependencies like `SDL2`.
+* If your project requires 3Rd dependencies like `GLFEW`.
 * If project requires develop extra libraries  like `TestLib.h`. add if them requires 3Rd dependencies.
 * If you need a C++ development laboratuary to test simple libraries requires 3Rd dependencies.
 
@@ -38,10 +39,22 @@
 ## Preparing Development Environment
 ```
     # clone the repo
-    git clone git@github.com:eheperson/rpp-n.git
+    git clone git@github.com:eheperson/opengl-lab.git
+
+    # init submodules
+    cd opengl-lab
+    git submodule update --init --recursive
 
     # change access rights of compile.sh file
     chmod +x bake.sh
+
+    # for OSX
+    brew update
+    brew upgrade
+    brew install cmake
+    brew install gcc
+    brew install glew
+    brew cleanup
 ```
 
 ---
@@ -55,59 +68,82 @@ As a step zero, you must link your 3Rd dependency to the project. There are 2 di
 * Get the builded binaries and link them.
 * Get the source code, build the source code then, link the binaries.
 
-Here are the steps of building 3Rd dependenc from source and link it 
-(*Example to build and link SDL2 module*) :
+Here are the steps of building 3Rd dependencies : 
+- GLFW
+- GLM
 
-1. If your 3Rd dependency on GitHub, you can add it easily as a git project submodule:
+**1. Build and install GLFW3**
 ```
-    cd ./external/sources
-    git submodule add git@github.com:libsdl-org/SDL.git
+    cd ./external/sources/glfw
 
-    # or just use git clone command
-    cd ./external/sources
-    git clone git@github.com:libsdl-org/SDL.git
-```
+    # ----- configure step 
 
-2. Create a build folder outside of the source code directory :
-```
-    # create build folder
-    mkdir -p ../sdl2_build
-```
-
-3. Configure the 3Rd dependency to prepare it for cmake build:
-```
-    cd ./SDL
-
-    # configure
-    cmake -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX=../../sdl2 \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=../../glfw \
       -S . \
-      -B ../sdl2_build 
-```
+      -B ../glfw-build
 
-4. Start build process of 3Rd dependency : 
-```
+    # ----- build step
     cd ../ # corresponds to ./external/sources
 
     # option 1
-    cmake --build ./sdl2_build -v
+    cmake --build ./glm-build --no-warn-unused-cli -v 
 
     # option 2
-    cd ./sdl2_build
+    cd ./glfw-build
     make -j7
-```
 
-4. Start install process of 3Rd dependency : 
-```
+    # ----- install step
+    
     cd ../ # correspond to ./external directory
     
     # option 1
-    cmake --install ./sources/sdl2_build --prefix sdl2
+    cmake --install ./sources/glfw-build
 
     # option 2 
-    cd ./sources/sdl2_build
+    cd ./sources/glfw-build
     make install
 ```
+
+**1. Build and install GLM**
+
+ 
+```
+    cd ./external/sources/glm
+
+    # ----- configure step 
+    cmake \
+      -DCMAKE_CXX_FLAGS="-Wno-unused-but-set-variable" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=../../glm \
+      -S . \
+      -B ../glm-build \
+ 
+
+    # ----- build step
+    cd ../ # corresponds to ./external/sources
+
+    # option 1
+    cmake --build ./glm-build -v
+
+    # option 2
+    cd ./glm-build
+    make -j7
+
+    # ----- install step
+    
+    cd ../ # correspond to ./external directory
+    
+    # option 1
+    cmake --install ./sources/glm-build
+
+    # option 2 
+    cd ./sources/glm-build
+    make install
+
+```
+
 
 > If you  dont want build the 3Rd dependencies from source and have binaries of the 3Rd dependency, just create new folder in the `./external/` dir and put them here.
 

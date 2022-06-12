@@ -68,8 +68,8 @@ set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 add_subdirectory(${MODULES_DIR})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS}) 
-# 
-target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS})
+#
+target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS}) 
 #
 # link the library to our project
 target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LINKS})

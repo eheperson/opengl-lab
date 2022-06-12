@@ -9,7 +9,13 @@
 // #define GLEW_BUILD
 
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
-#include <GL/glew.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glext.h>
+#else /// your stuff for linux
+    #include <GL/glew.h>
+#endif
+
 // Include GLFW
 #include <GLFW/glfw3.h>
 // Include GLM
@@ -21,7 +27,9 @@ int main(int arc, char ** argv){
 
     
     /* Initialise GLFW*/
-    glewExperimental = true; // Needed for core profile
+    #ifndef __APPLE__
+        glewExperimental = true; // Needed for core profile
+    #endif
     if( !glfwInit() ){
         std::cout << stderr <<"Failed to initialize GLFW\n";
         return -1;
@@ -48,13 +56,14 @@ int main(int arc, char ** argv){
 
     glfwMakeContextCurrent(window); // Initialize GLEW
 
-    glewExperimental=true; // Needed in core profile
 
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        return -1;
-    };
-
+    #ifndef __APPLE__
+        glewExperimental=true; // Needed in core profile
+        if (glewInit() != GLEW_OK) {
+            fprintf(stderr, "Failed to initialize GLEW\n");
+            return -1;
+        };
+    #endif
 
     /*--------------------------------------------------------------------------------------------------*/
 
@@ -62,8 +71,13 @@ int main(int arc, char ** argv){
     // Do this once your window is created 
     // (= after the OpenGL Context creation) and before any other OpenGL call.
     GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+    #ifdef __APPLE__
+        glGenVertexArraysAPPLE(1, &VertexArrayID);
+        glBindVertexArrayAPPLE(VertexArrayID);
+    #else
+        glGenVertexArrays(1, &VertexArrayID);
+        glBindVertexArray(VertexArrayID);
+    #endif
 
 
     // we need three 3D points in order to make a triangle
