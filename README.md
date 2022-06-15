@@ -78,7 +78,9 @@ Here are the steps of building 3Rd dependencies :
 
     # ----- configure step 
 
+    # remove "-DCMAKE_OSX_ARCHITECTURES=arm64 \" if don't use OSX
     cmake \
+      -DCMAKE_OSX_ARCHITECTURES=arm64 \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=../../glfw \
       -S . \
@@ -325,3 +327,8 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
 Shaders are programmed in a language called GLSL(GL Shader Language)
 
 GLSL has to be compiled at run time
+
+
+# References 
+- https://github.com/opengl-tutorials/ogl
+- https://github.com/k0pernicus/opengl-explorer

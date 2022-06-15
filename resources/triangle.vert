@@ -1,5 +1,5 @@
 // tell the compiler that we will use OpenGL 3’s syntax.
-#version 330 core
+#version 410 core
 
 // declares the input data 
 layout(location = 0) in vec3 vertexPosition_modelspace;

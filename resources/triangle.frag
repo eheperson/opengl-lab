@@ -1,5 +1,5 @@
 // tell the compiler that we will use OpenGL 3’s syntax.
-#version 330 core
+#version 410 core
 
 // “out” means that this is some output data
 out vec3 color;

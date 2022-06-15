@@ -10,6 +10,9 @@ project(rppp VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CXX_FLAGS "-Wall" "-Werror" "-Wextra" "-fsanitize=undefined,address")
+set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
+
 # Specify C Standards
 # C standards declerations must be above the call to add_executable
 set(CMAKE_C_STANDARD 99)

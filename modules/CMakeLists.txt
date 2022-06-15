@@ -2,6 +2,12 @@ set(EXTRA_INCLUDE_DIRS "${EXTRA_INCLUDE_DIRS}" PARENT_SCOPE)
 set(EXTRA_LIB_DIRS "${EXTRA_LIB_DIRS}" PARENT_SCOPE)
 set(EXTRA_LINKS "${EXTRA_LINKS}" PARENT_SCOPE)
 
+add_executable(00-openglZero 00-openglZero.cpp)        
+#       
+target_include_directories(00-openglZero PUBLIC ${EXTRA_INCLUDE_DIRS}) 
+target_link_directories(00-openglZero PUBLIC ${EXTRA_LIB_DIRS})
+target_link_libraries(00-openglZero PUBLIC  ${EXTRA_LINKS})
+
 add_executable(01-hellogl 01-hellogl.cpp)        
 #       
 target_include_directories(01-hellogl PUBLIC ${EXTRA_INCLUDE_DIRS}) 
