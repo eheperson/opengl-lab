@@ -220,9 +220,9 @@ int main(int arc, char ** argv){
         // tell OpenGL that you want to use your shader
         glUseProgram(programId);
 
-        GLint vertexPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
+        GLint vertesPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
 
-        glEnableVertexAttribArray(vertexPositionAttr);
+        glEnableVertexAttribArray(vertesPositionAttr);
 
         // 1st attribute buffer : vertices
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -245,7 +245,7 @@ int main(int arc, char ** argv){
         */
 
         glVertexAttribPointer(
-            vertexPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
+            vertesPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
             3,                  // size
             GL_FLOAT,           // type
             GL_FALSE,           // normalized?
@@ -255,7 +255,7 @@ int main(int arc, char ** argv){
 
         // Draw the triangle !
         glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-        glDisableVertexAttribArray(vertexPositionAttr);
+        glDisableVertexAttribArray(vertesPositionAttr);
 
         // Draw triangle here ---------------------------------------------------------------------------
 
