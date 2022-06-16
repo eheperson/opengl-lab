@@ -1,5 +1,5 @@
 
-static void quit_callback(GLFWwindow *window, int key, int scancode, int action, int _mods){
+static void quitCallback(GLFWwindow *window, int key, int scancode, int action, int _mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 };
@@ -37,7 +37,7 @@ GLFWwindow* init(const size_t width, const size_t height, const char* windowName
     }
     
     // Close the window as soon as the Escape key has been pressed
-    glfwSetKeyCallback(window, quit_callback);
+    glfwSetKeyCallback(window, quitCallback);
     // Makes the window context current
     glfwMakeContextCurrent(window);
 

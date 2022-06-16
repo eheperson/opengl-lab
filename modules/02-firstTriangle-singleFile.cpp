@@ -29,7 +29,7 @@ const size_t WIDTH = 640;
 const size_t HEIGHT = 480;
 const char* WINDOW_NAME = "Test OpenGL";
 
-static void quit_callback(GLFWwindow *window, int key, int scancode, int action, int _mods){
+static void quitCallback(GLFWwindow *window, int key, int scancode, int action, int _mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 };
@@ -59,7 +59,7 @@ int main(int arc, char ** argv){
         return -1;
     }
     // Close the window as soon as the Escape key has been pressed
-    glfwSetKeyCallback(window, quit_callback);
+    glfwSetKeyCallback(window, quitCallback);
     // Makes the window context current
     glfwMakeContextCurrent(window);
     // Enable the viewport
@@ -220,9 +220,9 @@ int main(int arc, char ** argv){
         // tell OpenGL that you want to use your shader
         glUseProgram(programId);
 
-        GLint vertesPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
+        GLint vertexPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
 
-        glEnableVertexAttribArray(vertesPositionAttr);
+        glEnableVertexAttribArray(vertexPositionAttr);
 
         // 1st attribute buffer : vertices
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -245,7 +245,7 @@ int main(int arc, char ** argv){
         */
 
         glVertexAttribPointer(
-            vertesPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
+            vertexPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
             3,                  // size
             GL_FLOAT,           // type
             GL_FALSE,           // normalized?
@@ -255,7 +255,7 @@ int main(int arc, char ** argv){
 
         // Draw the triangle !
         glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-        glDisableVertexAttribArray(vertesPositionAttr);
+        glDisableVertexAttribArray(vertexPositionAttr);
 
         // Draw triangle here ---------------------------------------------------------------------------
 
