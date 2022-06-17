@@ -22,7 +22,8 @@
 #include <GLFW/glfw3.h>
 
 #include "utils.hpp"
+#include "data.hpp"
 
-const size_t WIDTH = 640;
-const size_t HEIGHT = 480;
+const size_t WIDTH = 1024;
+const size_t HEIGHT = 768;
 const char* WINDOW_NAME = "Test OpenGL";

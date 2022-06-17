@@ -1,33 +1,4 @@
-#include<string>
-#include<stdio.h>
-#include<stdlib.h>
-#include <iostream>
-#include<vector>
-#include<sstream>
-#include<fstream>
-
-
-
-// Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
-#ifdef __APPLE__
-    #define GL_SILENCE_DEPRECATION
-    #define GLFW_INCLUDE_GLCOREARB
-    #include <OpenGL/gl.h>
-    #include <OpenGL/glext.h>
-#else /// your stuff for linux
-    #include <GL/glew.h>
-#endif
-
-// Include GLFW
-#include <GLFW/glfw3.h>
-// Include GLM
-#include <glm/glm.hpp>
-
-// #include "headers/utils.hpp"
-
-const size_t WIDTH = 640;
-const size_t HEIGHT = 480;
-const char* WINDOW_NAME = "Test OpenGL";
+#include "headers/common.hpp"
 
 static void quitCallback(GLFWwindow *window, int key, int scancode, int action, int _mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -180,11 +151,8 @@ int main(int arc, char ** argv){
     
     // we need three 3D points in order to make a triangle
     // An array of 3 vectors which represents 3 vertices
-    static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, 0.0f,
-            1.0f, -1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f,
-    };
+    static const GLfloat *g_vertex_buffer_data = triangle.vertexBufferData;
+
     
     /* --- Drawing Triangle --- */
     // We do this by creating a buffer:
@@ -199,7 +167,7 @@ int main(int arc, char ** argv){
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
     // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, 9*sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, triangle.bufferDataSize * sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
 
     // you need to create a Vertex Array Object and set it as the current one
     // Do this once your window is created 

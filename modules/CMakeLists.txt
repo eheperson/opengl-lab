@@ -27,6 +27,11 @@ target_include_directories(03-matricies-2 PUBLIC ${EXTRA_INCLUDE_DIRS})
 target_link_directories(03-matricies-2 PUBLIC ${EXTRA_LIB_DIRS})
 target_link_libraries(03-matricies-2 PUBLIC  ${EXTRA_LINKS})
 
+add_executable(04-coloredCube 04-coloredCube.cpp)
+target_include_directories(04-coloredCube PUBLIC ${EXTRA_INCLUDE_DIRS}) 
+target_link_directories(04-coloredCube PUBLIC ${EXTRA_LIB_DIRS})
+target_link_libraries(04-coloredCube PUBLIC  ${EXTRA_LINKS})
+
 # target_link_libraries(${EXECUTABLES} PUBLIC OpenGL glfw GLEW  ${EXTRA_LINKS} ${CMAKE_DL_LIBS})
 
 # install(TARGETS ${MODULE_1} DESTINATION lib)

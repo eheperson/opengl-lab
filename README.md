@@ -311,7 +311,7 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
         install(FILES ${MODULES_DIR}/${MODULE_2}/${MODULE_3}.h DESTINATION include)
     ```
 
-
+# OpenGL - Info
 
 * The screen origin is in the middle
 * Coordinate System : 
@@ -319,14 +319,48 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
         * X is your thumb (X in on your right)
         * Y is your index (Y is up)
         * Z is your middle finger. (Z is towards your back)
+* **4x antialising** : we have 4 samples in each pixel.
+* Make the colors change each frame. You’ll have to call glBufferData each frame. Make sure the appropriate buffer is bound (glBindBuffer) before 
+### Shaders
+- In the simplest possible configuration, you will need two shaders :
+  * **vertex shader :** will be executed for each vertex
+  * **fragment shader :** will be executed for each sample
+- Shaders are programmed in a language called GLSL(GL Shader Language)
+- GLSL has to be compiled at run time
 
-# Shaders
-* **vertex shader :** will be executed for each vertex
-* **fragment shader :** will be executed for each sample
 
-Shaders are programmed in a language called GLSL(GL Shader Language)
+### Drawing on Screen
+- **We do this by creating a buffer (*This needs to be done only once*)**:
+  - `GLuint vertexbuffer;` : This will identify our vertex buffer
+  - `glGenBuffers(1, &vertexbuffer);` : Generate 1 buffer, put the resulting identifier in vertexbuffer
+  -  The following commands will talk about our 'vertexbuffer' buffer :
+        ```
+            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+            // Give our vertices to OpenGL.
+            glBufferData(
+                GL_ARRAY_BUFFER, 
+                sizeof(g_vertex_buffer_data), 
+                g_vertex_buffer_data, 
+                GL_STATIC_DRAW
+            );
+        ```
 
-GLSL has to be compiled at run time
+### Z-Buffer
+
+- Depth component of each fragment in a buffer are storing in z-buffer and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one)
+- You can do this yourself, but it’s so much simpler to just ask the hardware to do it itself :
+- 
+```
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
+
+    // You also need to clear the depth each frame, instead of only the color :
+    // Clear the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+```
+
 
 
 # References 

@@ -45,11 +45,7 @@ int main(int arc, char ** argv){
     
     // we need three 3D points in order to make a triangle
     // An array of 3 vectors which represents 3 vertices
-    static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, 0.0f,
-            1.0f, -1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f,
-    };
+    static const GLfloat *g_vertex_buffer_data = triangle.vertexBufferData;
     
     /* --- Drawing Triangle --- */
     // We do this by creating a buffer:
@@ -61,7 +57,7 @@ int main(int arc, char ** argv){
     // The following commands will talk about our 'vbo' buffer
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, 9*sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, triangle.bufferDataSize * sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
 
     // you need to create a Vertex Array Object and set it as the current one
     // Do this once your window is created 
