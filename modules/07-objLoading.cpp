@@ -1,4 +1,7 @@
-
+// Include GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 
 
 #include "headers/common.hpp"
@@ -79,19 +82,18 @@ int main(int arc, char ** argv){
 
     // Load the texture using any two methods
 	// GLuint texture = loadBMP("./resources/textures/uvtemplate.bmp");
-	GLuint texture = loadDDS("./resources/textures/uvtemplate.DDS");
+	GLuint texture = loadDDS("./resources/textures/uvmap.DDS");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint textureId = glGetUniformLocation(programId, "myTextureSampler");
 
     /*--------------------------------------------------------------------------------------------------*/
     
-    // we need three 3D points in order to make a triangle
-    // An array of 3 vectors which represents 3 vertices
-    static const GLfloat *g_vertex_buffer_data = cubeTextured.vertexBufferData;
-    // One color for each vertex. They were generated randomly.
-    static const GLfloat *g_color_buffer_data = cubeTextured.uvBufferData;
-
+	// Read our .obj file
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals; // Won't be used at the moment.
+	bool res = loadOBJ("./resources/objects/cube.obj", vertices, uvs, normals);
 
     /* --- Drawing Triangle --- */
 
@@ -101,8 +103,8 @@ int main(int arc, char ** argv){
     glBindBuffer(GL_ARRAY_BUFFER, vbo); // bound the vertex buffer
     glBufferData( // fill the vertex buffer
         GL_ARRAY_BUFFER, 
-        cubeTextured.bufferDataSize * sizeof(float), 
-        g_vertex_buffer_data, 
+        vertices.size() * sizeof(glm::vec3), 
+        &vertices[0], 
         GL_STATIC_DRAW
     );
 
@@ -112,8 +114,8 @@ int main(int arc, char ** argv){
 	glBindBuffer(GL_ARRAY_BUFFER, cbo); // bound the color buffer
 	glBufferData( // fill the color buffer
         GL_ARRAY_BUFFER, 
-        cubeTextured.bufferDataSize * sizeof(float), 
-        g_color_buffer_data, 
+        uvs.size() * sizeof(glm::vec2), 
+        &uvs[0], 
         GL_STATIC_DRAW
     );
 
@@ -177,7 +179,7 @@ int main(int arc, char ** argv){
 		);
 
         // Draw the triangle !
-        glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size() ); // Starting from vertex 0; 3 vertices total -> 1 triangle
         
         glDisableVertexAttribArray(vertexPositionAttr);
         glDisableVertexAttribArray(vertexUV);

@@ -42,6 +42,10 @@ target_include_directories(06-controls PUBLIC ${EXTRA_INCLUDE_DIRS})
 target_link_directories(06-controls PUBLIC ${EXTRA_LIB_DIRS})
 target_link_libraries(06-controls PUBLIC  ${EXTRA_LINKS})
 
+add_executable(07-objLoading 07-objLoading.cpp)
+target_include_directories(07-objLoading PUBLIC ${EXTRA_INCLUDE_DIRS}) 
+target_link_directories(07-objLoading PUBLIC ${EXTRA_LIB_DIRS})
+target_link_libraries(07-objLoading PUBLIC  ${EXTRA_LINKS})
 
 # target_link_libraries(${EXECUTABLES} PUBLIC OpenGL glfw GLEW  ${EXTRA_LINKS} ${CMAKE_DL_LIBS})
 
