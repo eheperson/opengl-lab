@@ -57,7 +57,7 @@ int main(int arc, char ** argv){
     GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 
     // read vertex shader 
-    std::string vertexShaderPath = "./resources/triangle.vert";
+    std::string vertexShaderPath = "./resources/shaders/triangle.vert";
     std::string vertexShaderCode;
 	std::ifstream vertexShaderStream(vertexShaderPath, std::ios::in);
 	if(vertexShaderStream.is_open()){
@@ -93,7 +93,7 @@ int main(int arc, char ** argv){
     GLuint fragmentShaderId =  glCreateShader(GL_FRAGMENT_SHADER);
 
     // read fragmentshader 
-    std::string fragmentShaderPath = "./resources/triangle.frag";
+    std::string fragmentShaderPath = "./resources/shaders/triangle.frag";
     std::string fragmentShaderCode;
 	std::ifstream fragmentShaderStream(fragmentShaderPath, std::ios::in);
 	if(fragmentShaderStream.is_open()){

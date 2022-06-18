@@ -25,7 +25,7 @@ int main(int arc, char ** argv){
 
     vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
     // read vertex shader 
-    std::string const vertexShaderPath = "./resources/simpleTransform.vert";
+    std::string const vertexShaderPath = "./resources/shaders/simpleTransform.vert";
     std::string vertexShaderCode = readShaderFile(vertexShaderPath);
     //compile vertex shader
     compileShader(programId, vertexShaderId, vertexShaderCode, result, infoLogLength);
@@ -34,7 +34,7 @@ int main(int arc, char ** argv){
 
     fragmentShaderId =  glCreateShader(GL_FRAGMENT_SHADER);
     // read fragment shader 
-    std::string const fragmentShaderPath = "./resources/simpleTransform.frag";
+    std::string const fragmentShaderPath = "./resources/shaders/simpleTransform.frag";
     std::string fragmentShaderCode = readShaderFile(fragmentShaderPath);
     //compile vertex shader
     compileShader(programId, fragmentShaderId, fragmentShaderCode, result, infoLogLength);
@@ -83,7 +83,7 @@ int main(int arc, char ** argv){
     // The following commands will talk about our 'vbo' buffer
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, 9*sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, triangle.bufferDataSize * sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
 
     // you need to create a Vertex Array Object and set it as the current one
     // Do this once your window is created 

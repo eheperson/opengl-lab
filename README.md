@@ -361,6 +361,9 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
 
+### Textures
+
+- Each vertex can have, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture.
 
 
 # References 

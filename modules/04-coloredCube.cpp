@@ -31,7 +31,7 @@ int main(int arc, char ** argv){
 
     vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
     // read vertex shader 
-    std::string const vertexShaderPath = "./resources/transformedVertexShader.vert";
+    std::string const vertexShaderPath = "./resources/shaders/transformVertexShader.vert";
     std::string vertexShaderCode = readShaderFile(vertexShaderPath);
     //compile vertex shader
     compileShader(programId, vertexShaderId, vertexShaderCode, result, infoLogLength);
@@ -40,7 +40,7 @@ int main(int arc, char ** argv){
 
     fragmentShaderId =  glCreateShader(GL_FRAGMENT_SHADER);
     // read fragment shader 
-    std::string const fragmentShaderPath = "./resources/colorFragmentShader.frag";
+    std::string const fragmentShaderPath = "./resources/shaders/colorFragmentShader.frag";
     std::string fragmentShaderCode = readShaderFile(fragmentShaderPath);
     //compile vertex shader
     compileShader(programId, fragmentShaderId, fragmentShaderCode, result, infoLogLength);

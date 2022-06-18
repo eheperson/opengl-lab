@@ -19,13 +19,19 @@ int main(int arc, char ** argv){
     driverInfo();
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
     programId = glCreateProgram();
+
+    // Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS); 
 
     /*--------------------------------------------------------------------------------------------------*/
 
     vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
     // read vertex shader 
-    std::string const vertexShaderPath = "./resources/shaders/simpleTransform.vert";
+    std::string const vertexShaderPath = "./resources/shaders/transformVertexShader-texture.vert";
     std::string vertexShaderCode = readShaderFile(vertexShaderPath);
     //compile vertex shader
     compileShader(programId, vertexShaderId, vertexShaderCode, result, infoLogLength);
@@ -34,7 +40,7 @@ int main(int arc, char ** argv){
 
     fragmentShaderId =  glCreateShader(GL_FRAGMENT_SHADER);
     // read fragment shader 
-    std::string const fragmentShaderPath = "./resources/shaders/simpleTransform.frag";
+    std::string const fragmentShaderPath = "./resources/shaders/textureFragmentShader.frag";
     std::string fragmentShaderCode = readShaderFile(fragmentShaderPath);
     //compile vertex shader
     compileShader(programId, fragmentShaderId, fragmentShaderCode, result, infoLogLength);
@@ -46,15 +52,12 @@ int main(int arc, char ** argv){
     cleanShader(programId, fragmentShaderId);
 
     /*--------------------------------------------------------------------------------------------------*/
-    
+
 	// Get a handle for our "MVP" uniform
 	GLuint matrixId = glGetUniformLocation(programId, "MVP");
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	// Or, for an ortho camera :
-	//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-	
 	// Camera matrix
 	glm::mat4 view       = glm::lookAt(
 								glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
@@ -65,68 +68,85 @@ int main(int arc, char ** argv){
 	glm::mat4 model      = glm::mat4(1.0f);
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 mvp        = projection * view * model; // Remember, matrix multiplication is the other way around
-    
-    
+
+    /*--------------------------------------------------------------------------------------------------*/
+
+    // Load the texture using any two methods
+	// GLuint texture = loadBMP("./resources/textures/uvtemplate.bmp");
+	GLuint texture = loadDDS("./resources/textures/uvtemplate.DDS");
+	
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint textureId = glGetUniformLocation(programId, "myTextureSampler");
+
     /*--------------------------------------------------------------------------------------------------*/
     
     // we need three 3D points in order to make a triangle
     // An array of 3 vectors which represents 3 vertices
-    static const GLfloat *g_vertex_buffer_data = triangle.vertexBufferData;
-    
-    /* --- Drawing Triangle --- */
-    // We do this by creating a buffer:
-    // This will identify our vertex buffer
-    // This needs to be done only once. ----------------------------------------- !!!!!!!
-    GLuint vbo;
-    // Generate 1 buffer, put the resulting identifier in vbo
-    glGenBuffers(1, &vbo);
-    // The following commands will talk about our 'vbo' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, triangle.bufferDataSize * sizeof(float), g_vertex_buffer_data, GL_STATIC_DRAW);
+    static const GLfloat *g_vertex_buffer_data = cube.vertexBufferData;
+    // One color for each vertex. They were generated randomly.
+    static const GLfloat *g_color_buffer_data = cube.colorBufferData;
 
-    // you need to create a Vertex Array Object and set it as the current one
-    // Do this once your window is created 
-    // (= after the OpenGL Context creation) and before any other OpenGL call.
-    GLuint vao;
+
+    /* --- Drawing Triangle --- */
+
+    // vertex buffer object
+    GLuint vbo; // identify vertex buffer object
+    glGenBuffers(1, &vbo); // create vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); // bound the vertex buffer
+    glBufferData( // fill the vertex buffer
+        GL_ARRAY_BUFFER, 
+        cube.bufferDataSize * sizeof(float), 
+        g_vertex_buffer_data, 
+        GL_STATIC_DRAW
+    );
+
+    // color buffer object or uvbuffer
+	GLuint cbo; // identify color buffer object
+	glGenBuffers(1, &cbo); //create color buffer
+	glBindBuffer(GL_ARRAY_BUFFER, cbo); // bound the color buffer
+	glBufferData( // fill the color buffer
+        GL_ARRAY_BUFFER, 
+        cube.bufferDataSize * sizeof(float), 
+        g_color_buffer_data, 
+        GL_STATIC_DRAW
+    );
+
+    GLuint vao; // vertex array object
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    /*
-        OpenGL doesn’t know what a colour is : it just sees a vec3. 
-        So we have to tell him which buffer corresponds to which input. 
-        
-        We do that by setting the layout to the same value as the first parameter to 
-            glVertexAttribPointer. 
 
-        The value “0” is not important, 
-        it could be 12 
-        (but no more than glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v))
-
-        the important thing is that it’s the same number on both sides. :
-
-                layout(location = 0) in vec3 vertexPosition_modelspace;
-    */
-    GLint vertesPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
+    GLint vertexPositionAttr = glGetAttribLocation(programId, "vertexPosition_modelspace");
+    GLint vertexUV = glGetAttribLocation(programId, "vertexUV");
 
     /*--------------------------------------------------------------------------------------------------*/
 
     do{ // Rendering
+        
+        // fill the screen
         glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        
         // Clear the screen. 
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-        // tell OpenGL that you want to use your shader
+
+        // use shader program
         glUseProgram(programId);
 
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(matrixId, 1, GL_FALSE, &mvp[0][0]);
 
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		// Set our "myTextureSampler" sampler to use Texture Unit 0
+		glUniform1i(textureId, 0);
+
         // 1rst attribute buffer : vertices
-        glEnableVertexAttribArray(vertesPositionAttr);
+        glEnableVertexAttribArray(vertexPositionAttr);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glVertexAttribPointer(
-            vertesPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
+            vertexPositionAttr, // attribute 0. No particular reason for 0, but must match the layout in the shader.
             3,                  // size
             GL_FLOAT,           // type
             GL_FALSE,           // normalized?
@@ -134,10 +154,23 @@ int main(int arc, char ** argv){
             (void*)0           // array buffer offset
         );
 
+		// 2nd attribute buffer : colors
+		glEnableVertexAttribArray(vertexUV);
+		glBindBuffer(GL_ARRAY_BUFFER, cbo);
+		glVertexAttribPointer(
+			vertexUV,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
         // Draw the triangle !
-        glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+        glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 3 vertices total -> 1 triangle
         
-        glDisableVertexAttribArray(vertesPositionAttr);
+        glDisableVertexAttribArray(vertexPositionAttr);
+        glDisableVertexAttribArray(vertexUV);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
@@ -150,10 +183,14 @@ int main(int arc, char ** argv){
 
     /*--------------------------------------------------------------------------------------------------*/
 
-    // Cleanup vbp
+    // Cleanup vbo
 	glDeleteBuffers(1, &vbo);
+    // Cleanup vco
+	glDeleteBuffers(1, &cbo);
     // cleanup vao
 	glDeleteVertexArrays(1, &vao);
+    //delete texture
+    glDeleteTextures(1, &texture);
     // delete program
 	glDeleteProgram(programId);
     // terminate glfw
