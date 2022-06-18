@@ -29,7 +29,7 @@ GLFWwindow* init(const size_t width, const size_t height, const char* windowName
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
-    window = glfwCreateWindow(height, width, windowName, NULL, NULL);
+    window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     if (!window){
         std::cerr << "ERROR: could not open window with GLFW3" << std::endl;
         glfwTerminate();

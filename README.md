@@ -365,6 +365,20 @@ To the purpose of maintainability, test module renamed as `'${MODULE_1}'` in the
 
 - Each vertex can have, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture.
 
+### Controls 
+
+- `FoV` is the level of zoom. 80° = very wide angle, huge deformations. 60° - 45° : standard. 20° : big zoom.
+- We will first recompute position, horizontalAngle, verticalAngle and FoV according to the inputs, and then compute the View and Projection matrices from position, horizontalAngle, verticalAngle and FoV.
+
+### Backface Culling
+Now that you can freely move around, you’ll notice that if you go inside the cube, polygons are still displayed. This can seem obvious, but this remark actually opens an opportunity for optimisation. As a matter of fact, in a usual application, you are never inside a cube.
+
+The idea is to let the GPU check if the camera is behind, or in front of, the triangle. If it’s in front, display the triangle; if it’s behind, and the mesh is closed, and we’re not inside the mesh, then there will be another triangle in front of it, and nobody will notice anything, except that everything will be faster : 2 times less triangles on average !
+
+The best thing is that it’s very easy to check this. The GPU computes the normal of the triangle (using the cross product, remember ?) and checks whether this normal is oriented towards the camera or not.
+
+This comes at a cost, unfortunately : the orientation of the triangle is implicit. This means that is you invert two vertices in your buffer, you’ll probably end up with a hole. But it’s generally worth the little additional work. Often, you just have to click “invert normals” in your 3D modeler (which will, in fact, invert vertices, and thus normals) and everything is just fine.
+
 
 # References 
 - https://github.com/opengl-tutorials/ogl

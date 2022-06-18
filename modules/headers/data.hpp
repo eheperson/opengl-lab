@@ -97,3 +97,89 @@ struct cube{
         };
 } cube;
 
+
+struct cubeTextured{
+        static const int bufferDataSize = 118;
+        GLfloat vertexBufferData[bufferDataSize] = {
+        /*
+                Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+                A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
+        */
+        -1.0f,-1.0f,-1.0f, // triangle 1  : begin
+        -1.0f,-1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f, // triangle 1  : end
+        1.0f, 1.0f,-1.0f, // triangle 2  : begin
+        -1.0f,-1.0f,-1.0f,
+        -1.0f, 1.0f,-1.0f, // triangle 2  : end
+        1.0f,-1.0f, 1.0f, // triangle 3  : begin
+        -1.0f,-1.0f,-1.0f, 
+        1.0f,-1.0f,-1.0f, // triangle 3  : end
+        1.0f, 1.0f,-1.0f, // triangle 4  : begin
+        1.0f,-1.0f,-1.0f,
+        -1.0f,-1.0f,-1.0f, // triangle 4  : end
+        -1.0f,-1.0f,-1.0f, // triangle 5  : begin
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f,-1.0f, // triangle 5  : end
+        1.0f,-1.0f, 1.0f, // triangle 6  : begin
+        -1.0f,-1.0f, 1.0f,
+        -1.0f,-1.0f,-1.0f, // triangle 6  : end
+        -1.0f, 1.0f, 1.0f, // triangle 7  : begin
+        -1.0f,-1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f, // triangle 7  : end
+        1.0f, 1.0f, 1.0f, // triangle 8  : begin
+        1.0f,-1.0f,-1.0f,
+        1.0f, 1.0f,-1.0f, // triangle 8  : end
+        1.0f,-1.0f,-1.0f, // triangle 9  : begin
+        1.0f, 1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f, // triangle 9  : end
+        1.0f, 1.0f, 1.0f, // triangle 10 : begin
+        1.0f, 1.0f,-1.0f,
+        -1.0f, 1.0f,-1.0f, // triangle 10 : end
+        1.0f, 1.0f, 1.0f, // triangle 11 : begin
+        -1.0f, 1.0f,-1.0f,
+        -1.0f, 1.0f, 1.0f, // triangle 11 : end
+        1.0f, 1.0f, 1.0f, // triangle 12 : begin
+        -1.0f, 1.0f, 1.0f,
+        1.0f,-1.0f, 1.0f  // triangle 12 : end
+        };
+
+        // One color for each vertex. They were generated randomly.
+        GLfloat uvBufferData[bufferDataSize] = {
+		0.000059f, 1.0f-0.000004f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.335973f, 1.0f-0.335903f, 
+		1.000023f, 1.0f-0.000013f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.999958f, 1.0f-0.336064f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.667969f, 1.0f-0.671889f, 
+		1.000023f, 1.0f-0.000013f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.000059f, 1.0f-0.000004f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.336098f, 1.0f-0.000071f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.336024f, 1.0f-0.671877f, 
+		1.000004f, 1.0f-0.671847f, 
+		0.999958f, 1.0f-0.336064f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.336098f, 1.0f-0.000071f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.000004f, 1.0f-0.671870f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.667969f, 1.0f-0.671889f, 
+		1.000004f, 1.0f-0.671847f, 
+		0.667979f, 1.0f-0.335851f
+	};
+} cubeTextured;

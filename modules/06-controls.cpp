@@ -1,8 +1,11 @@
-#include "headers/common.hpp"
-
 // Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+
+
+#include "headers/common.hpp"
+#include "headers/controls.hpp"
 
 int main(int arc, char ** argv){
 
@@ -22,10 +25,29 @@ int main(int arc, char ** argv){
 
     programId = glCreateProgram();
 
+    /*--------------------------------------------------------------------------------------------------*/
+	
+    // Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
+
     // Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
+
+    /*--------------------------------------------------------------------------------------------------*/
+
+	// Ensure we can capture the escape key being pressed below
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    // Hide the mouse and enable unlimited mouvement
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window, WIDTH/2, HEIGHT/2);
+
+    // Dark blue background
+    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
     /*--------------------------------------------------------------------------------------------------*/
 
@@ -55,19 +77,6 @@ int main(int arc, char ** argv){
 
 	// Get a handle for our "MVP" uniform
 	GLuint matrixId = glGetUniformLocation(programId, "MVP");
-
-	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-	// Camera matrix
-	glm::mat4 view       = glm::lookAt(
-								glm::vec3(4,3,-3), // Camera is at (4,3,-3), in World Space
-								glm::vec3(0,0,0), // and looks at the origin
-								glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-						   );
-	// Model matrix : an identity matrix (model will be at the origin)
-	glm::mat4 model      = glm::mat4(1.0f);
-	// Our ModelViewProjection : multiplication of our 3 matrices
-	glm::mat4 mvp        = projection * view * model; // Remember, matrix multiplication is the other way around
 
     /*--------------------------------------------------------------------------------------------------*/
 
@@ -123,14 +132,18 @@ int main(int arc, char ** argv){
 
     do{ // Rendering
         
-        // fill the screen
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-        
         // Clear the screen. 
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
         // use shader program
         glUseProgram(programId);
+
+		// Compute the MVP matrix from keyboard and mouse input
+		computeMatricesFromInputs(window, WIDTH, HEIGHT);
+		glm::mat4 projectionMatrix = getProjectionMatrix();
+		glm::mat4 viewMatrix = getViewMatrix();
+		glm::mat4 modelMatrix = glm::mat4(1.0);
+		glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
 
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
