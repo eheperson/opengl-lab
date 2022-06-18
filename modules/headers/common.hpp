@@ -7,6 +7,8 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <vector>
+#include <map>
 
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #ifdef __APPLE__
