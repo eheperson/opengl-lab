@@ -52,6 +52,11 @@ target_include_directories(08-basicShading PUBLIC ${EXTRA_INCLUDE_DIRS})
 target_link_directories(08-basicShading PUBLIC ${EXTRA_LIB_DIRS})
 target_link_libraries(08-basicShading PUBLIC  ${EXTRA_LINKS})
 
+add_executable(09-vboIndexing 09-vboIndexing.cpp)
+target_include_directories(09-vboIndexing PUBLIC ${EXTRA_INCLUDE_DIRS}) 
+target_link_directories(09-vboIndexing PUBLIC ${EXTRA_LIB_DIRS})
+target_link_libraries(09-vboIndexing PUBLIC  ${EXTRA_LINKS})
+
 # target_link_libraries(${EXECUTABLES} PUBLIC OpenGL glfw GLEW  ${EXTRA_LINKS} ${CMAKE_DL_LIBS})
 
 # install(TARGETS ${MODULE_1} DESTINATION lib)

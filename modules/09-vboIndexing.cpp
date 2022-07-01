@@ -96,11 +96,6 @@ int main(int arc, char ** argv){
 	std::vector<glm::vec3> normals; // Won't be used at the moment.
 	bool res = loadOBJ("./resources/objects/suzanne.obj", vertices, uvs, normals);
 
-	std::vector<unsigned short> indices;
-	std::vector<glm::vec3> indexedVertices;
-	std::vector<glm::vec2> indexedUVs;
-	std::vector<glm::vec3> indexedNormals; // Won't be used at the moment.
-    indexVBO(vertices, uvs, normals, indices, indexedVertices, indexedUVs, indexedNormals);
     /* --- Drawing Triangle --- */
 
     // vertex buffer object
@@ -135,19 +130,6 @@ int main(int arc, char ** argv){
         GL_STATIC_DRAW
     );
 
-    //Generate a buffer for the indices as well
-    // element buffer object
-    GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(
-        GL_ELEMENT_ARRAY_BUFFER, 
-        indices.size() * sizeof(unsigned short), 
-        &indices[0], 
-        GL_STATIC_DRAW
-    );
-
-
     // Get a handle for our "LightPosition" uniform
 	glUseProgram(programId);
 	GLuint lightId = glGetUniformLocation(programId, "LightPosition_worldspace");
@@ -161,22 +143,8 @@ int main(int arc, char ** argv){
 
     /*--------------------------------------------------------------------------------------------------*/
 
-    // For speed computation
-	double lastTime = glfwGetTime();
-	int nbFrames = 0;
-
     do{ // Rendering
         
-        // Measure speed 
-		double currentTime = glfwGetTime();
-		nbFrames++;
-		if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1sec ago
-			// printf and reset
-			printf("%f ms/frame\n", 1000.0/double(nbFrames));
-			nbFrames = 0;
-			lastTime += 1.0;
-		}
-
         // Clear the screen. 
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -241,9 +209,6 @@ int main(int arc, char ** argv){
 			(void*)0                          // array buffer offset
 		);
 
-        // Index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
         // Draw the triangle !
         glDrawArrays(GL_TRIANGLES, 0, vertices.size() ); // Starting from vertex 0; 3 vertices total -> 1 triangle
         
@@ -270,8 +235,6 @@ int main(int arc, char ** argv){
 	glDeleteVertexArrays(1, &vao);
     // delete nbo
     glDeleteBuffers(1, &nbo);
-    // delete ebo
-    glDeleteBuffers(1, &ebo);
     //delete texture
     glDeleteTextures(1, &texture);
     // delete program
